@@ -1,12 +1,73 @@
-
 <head>
   <title>Leaderboard</title>
 </head>
 <body>
+
 <h1>Leaderboard</h1>
 {{> leaderboard}}
+
+{{> addPlayerForm}}
+
+{{> loginButtons}}
+
 </body>
 
+<!--Templates:  By creating templates, we’re able to form a bridge between our application logic and our interface.-->
+<!--NOTE that templates MUST run only on the client side.-->
+<!--...So, you have to wrap the calls to Template inside if (Meteor.isClient()) {... statement.-->
 <template name="leaderboard">
-  {{player}}
+  <!--below is an "each block": here's how it works:
+
+  -->
+  <ul>
+    {{#each player}}
+      <li class="player {{selectedClass}}"> {{name}}: {{score}} </li>
+    {{/each}}
+    <li> Total players: {{countPlayers}} </li>
+    {{#if showSelectedPlayer}}
+      <li>Selected Player: {{showSelectedPlayer.name}}</li>
+    {{/if}}
+  </ul>
+
+  {{#each numArray}}
+    {{this}} <!--displays an element in "this" array.-->
+  {{/each}}
+  <br>
+  <br>
+
+  {{#each numArray}}
+    {{this}} <br>
+  {{/each}}
+
+  <!-- Databases, Part 2: -->
+  {{#if showSelectedPlayer}}
+    <input type="button" class="increment" value="Give 5 points">
+  {{/if}}
+  <br>
+  {{#if showSelectedPlayer}}
+    <input type="button" class="decrement" value="Take 5 points">
+  {{/if}}
+  <br>
+
+  <!-- Form Notes:  Removing Players: -->
+  {{#if currentUser}}
+    <input type="button" class="remove" value="Remove Player">
+  {{/if}}
+</template>  <!-- close leaderboard template. -->
+
+<!-- Creating a second template that uses a Form:
+Form Notes:
+--Start with open and close  <form>  tags.
+--Next, use single tag  <input ...>  tags.
+--first parameter  type=...  can be either "text", "submit"
+--"submit":  Creates a submit box, follow this with  value=...  where the ... will be text instructions on what to enter.
+-->
+<template name="addPlayerForm">
+  {{#if currentUser}}
+    <form>
+      <input type="text" name="playerName">
+      <input type="text" name="playerScore">
+      <input type="submit" value="Add Player and Initial Score">
+    </form>
+  {{/if}}
 </template>
